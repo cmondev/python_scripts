@@ -11,6 +11,7 @@ FILTER_STRING_DEFAULT = ""
 
 def copy_files(source, output, filter_str, extensions, dry_run):
     files_list = []
+    ignored_list = []
 
     if source is None:
         source = os.getcwd()
@@ -25,19 +26,21 @@ def copy_files(source, output, filter_str, extensions, dry_run):
         for f in ignored_files:
             abs_path = os.path.join(dirpath, f)
             print("Skipping %s" % abs_path)
+            ignored_list.append(abs_path)
 
-    if dry_run is False:
-        if output is None:
-            output = os.path.join(os.getcwd(), "output")
-            if os.path.exists(output) is False:
-                os.mkdir(output)
+    if output is None:
+        output = os.path.join(os.getcwd(), "output")
+        if os.path.exists(output) is False and dry_run is False:
+            os.mkdir(output)
 
-        if os.path.exists(output) is False:
-            output = os.path.join(os.getcwd(), output)
-            if os.path.exists(output) is False:
-                os.mkdir(output)
+    if os.path.exists(output) is False:
+        output = os.path.join(os.getcwd(), output)
+        if os.path.exists(output) is False and dry_run is False:
+            os.mkdir(output)
 
     file_list_length = len(files_list)
+    print("%i files will be copied." % file_list_length)
+    print("%i files will be ignored." % len(ignored_list))
     for i in range(0, file_list_length):
         f = files_list[i]
         correct_filename = check_existence_and_rename(os.path.basename(f), output, suffix=files_list.index(f))
@@ -46,7 +49,8 @@ def copy_files(source, output, filter_str, extensions, dry_run):
             print("Copying files %.2f%%" % percent, end="\r")
             shutil.copy2(f, os.path.join(output, correct_filename))
         else:
-            print("Fake copying files %.2f%%" % percent, end="\r")
+            print("Fake copying files %.2f%% (dry run)" % percent, end="\r")
+    print()
 
 
 def filter_extension(file_names: list, extensions: list) -> list:
