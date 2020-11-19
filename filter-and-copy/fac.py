@@ -5,6 +5,10 @@ import shutil
 from typing import Tuple
 
 
+EXTENSION_DEFAULT = ["*.*"]
+FILTER_STRING_DEFAULT = ""
+
+
 def copy_files(source, output, filter_str, extensions, dry_run):
     files_list = []
 
@@ -77,19 +81,22 @@ def check_existence_and_rename(file_name: str, dest_dir: str, suffix: int) -> st
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description="Filter files by file extension and substrings")
-    parser.add_argument("-d", "--dry", dest="dry", action="store_true", help="Dry run. Affected files will be logged, "
+    parser = argparse.ArgumentParser(description="Filter and copy files by file extension and substrings")
+    parser.add_argument("-d", "--dry", dest="dry", action="store_false", help="Dry run. Affected files will be logged, "
                                                                               "but no files will be copied")
-    parser.add_argument("-e", "--extensions", action="store", dest="extensions", default=["*.*"], nargs="*",
+    parser.add_argument("-e", "--extensions", action="store", dest="extension", default=EXTENSION_DEFAULT, nargs="*",
                         help="The file extension to filter with, e.g. -e *.jpg. Default is .* for all file extensions. "
-                             "Can also be a list, e.h. -e *.jpg *.png")
-    parser.add_argument("-f", "--filter", dest="filterstring", action="store", default="",
+                             "Can also be a list, e.g. -e *.jpg *.png")
+    parser.add_argument("-f", "--filter", dest="filterstring", action="store", default=FILTER_STRING_DEFAULT,
                         help="Filter string to search for if duplicates are to be expected. For example A.pdf will be "
                              "ignored and A_edited.pdf will be kept if -f _edited")
     parser.add_argument("-o", "--output", dest="output", action="store",
                         help="Output folder to copy files to. Either absolute or relative.")
-    parser.add_argument("-s", "--source", dest="source", action="store", help="Source folder to check. Either absolute "
-                                                                              "or relative.")
+    parser.add_argument("-s", "--source", dest="source", action="store", help="Source folder to check. ""Either "
+                                                                              "absolute or relative.")
 
     args = parser.parse_args()
-    copy_files(args.source, args.output, args.filterstring, args.extensions, args.dry)
+    if args.extension == EXTENSION_DEFAULT and args.filterstring == FILTER_STRING_DEFAULT:
+        parser.error("No target option was given. Add either --extensions or --filter. Use --help for help.")
+
+    copy_files(args.source, args.output, args.filterstring, args.extension, args.dry)
