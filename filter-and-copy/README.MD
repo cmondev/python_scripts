@@ -47,7 +47,7 @@ Following options are possible.
     -s SOURCE, --source SOURCE
                             Source folder to check. Either absolute or relative.
 
-Either -e or -f has to be set. So the example command for for my Google Photos 
+Either `-e` or `-f` has to be set. So the example command for for my Google Photos 
 usecase looks like this (assuming I am currently in the root folder of the structure 
 shown above):
 
