@@ -82,8 +82,8 @@ def check_existence_and_rename(file_name: str, dest_dir: str, suffix: int) -> st
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Filter and copy files by file extension and substrings")
-    parser.add_argument("-d", "--dry", dest="dry", action="store_false", help="Dry run. Affected files will be logged, "
-                                                                              "but no files will be copied")
+    parser.add_argument("-d", "--dry", dest="dry", action="store_true", help="Dry run. Affected files will be logged, "
+                                                                             "but no files will be copied")
     parser.add_argument("-e", "--extensions", action="store", dest="extension", default=EXTENSION_DEFAULT, nargs="*",
                         help="The file extension to filter with, e.g. -e *.jpg. Default is .* for all file extensions. "
                              "Can also be a list, e.g. -e *.jpg *.png")
