@@ -1,6 +1,6 @@
-##Filter and copy
+# Filter and copy
 
-###The basic idea
+### The basic idea
 This script was originally created to perform a flat copy of pictures 
 downloaded from Google Photos. The downloaded zip archive(s) have following 
 structure (file names are german):  
@@ -23,7 +23,7 @@ So what I wanted to achieve is to traverse all folders and filter for all files 
 extension *.jpg. Furthermore if there is a file which name includes "bearbeitet" 
 (german for "edited") I want to keep this file, but skip the original file. 
 
-###How to use the script
+### How to use the script
 Following options are possible.
 
     -h, --help              show this help message and exit
